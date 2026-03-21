@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="860" viewBox="0 0 1200 860" role="img" aria-labelledby="title desc">
+  <title id="title">Enterprise Provisioning Workbench Demo Run Summary</title>
+  <desc id="desc">Terminal-style screenshot generated from a real demo_app execution report.</desc>
+  <rect width="1200" height="860" fill="#0b1020"/>
+  <rect x="24" y="24" width="1152" height="812" rx="18" fill="#111827" stroke="#243041" stroke-width="2"/>
+  <circle cx="60" cy="56" r="8" fill="#ff5f56"/>
+  <circle cx="86" cy="56" r="8" fill="#ffbd2e"/>
+  <circle cx="112" cy="56" r="8" fill="#27c93f"/>
+  <text x="144" y="62" fill="#9ca3af" font-family="Consolas, 'Courier New', monospace" font-size="20">demo_app --show-stages --save-report sample-output/run-report.json</text>
+
+  <text x="52" y="120" fill="#f9fafb" font-family="Consolas, 'Courier New', monospace" font-size="34" font-weight="700">ENTERPRISE PROVISIONING WORKBENCH DEMO</text>
+  <text x="52" y="158" fill="#9ca3af" font-family="Consolas, 'Courier New', monospace" font-size="22">Source: sample-data</text>
+  <text x="52" y="190" fill="#9ca3af" font-family="Consolas, 'Courier New', monospace" font-size="22">Ingested requests: 4</text>
+  <text x="52" y="222" fill="#9ca3af" font-family="Consolas, 'Courier New', monospace" font-size="22">Unique accounts: 3</text>
+  <text x="52" y="254" fill="#9ca3af" font-family="Consolas, 'Courier New', monospace" font-size="22">Decision mix: create=1  review=1  skip=1</text>
+
+  <text x="52" y="320" fill="#93c5fd" font-family="Consolas, 'Courier New', monospace" font-size="26" font-weight="700">NORMALIZED REQUESTS</text>
+  <rect x="52" y="338" width="1090" height="124" rx="10" fill="#0f172a" stroke="#334155"/>
+  <text x="76" y="374" fill="#cbd5e1" font-family="Consolas, 'Courier New', monospace" font-size="20">REQ-1001  alice.chen       VPN    email</text>
+  <text x="76" y="406" fill="#cbd5e1" font-family="Consolas, 'Courier New', monospace" font-size="20">REQ-1002  alice.chen       MAIL   email</text>
+  <text x="76" y="438" fill="#cbd5e1" font-family="Consolas, 'Courier New', monospace" font-size="20">REQ-1003  existing-bob.wu  VPN    email</text>
+  <text x="76" y="470" fill="#cbd5e1" font-family="Consolas, 'Courier New', monospace" font-size="20">REQ-1004  carol.lin        ADMIN  email</text>
+
+  <text x="52" y="536" fill="#86efac" font-family="Consolas, 'Courier New', monospace" font-size="26" font-weight="700">ACTION BOARD</text>
+  <rect x="52" y="554" width="1090" height="172" rx="10" fill="#0f172a" stroke="#334155"/>
+  <text x="76" y="590" fill="#22c55e" font-family="Consolas, 'Courier New', monospace" font-size="20">alice.chen       CREATE   MAIL, VPN  Safe deterministic batch create.</text>
+  <text x="76" y="630" fill="#f59e0b" font-family="Consolas, 'Courier New', monospace" font-size="20">carol.lin        REVIEW   ADMIN      High-impact access requires operator review.</text>
+  <text x="76" y="670" fill="#94a3b8" font-family="Consolas, 'Courier New', monospace" font-size="20">existing-bob.wu  SKIP     VPN        Existing account detected by lookup rule.</text>
+  <text x="76" y="710" fill="#cbd5e1" font-family="Consolas, 'Courier New', monospace" font-size="18">Provisioning events: SIMULATED CREATE alice.chen [MAIL, VPN]</text>
+
+  <rect x="52" y="760" width="1090" height="44" rx="8" fill="#0b5fff" opacity="0.18"/>
+  <text x="76" y="789" fill="#bfdbfe" font-family="Consolas, 'Courier New', monospace" font-size="18">Evidence generated from a real local run on 2026-03-21. Public repo keeps only sanitized sample data and output.</text>
+</svg>
