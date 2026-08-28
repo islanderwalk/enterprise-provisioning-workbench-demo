@@ -3,28 +3,10 @@ from __future__ import annotations
 from .models import RawRequest
 
 SAMPLE_REQUESTS = [
-    RawRequest(
-        request_id="REQ-1001",
-        account_key="alice.chen",
-        display_name="Alice Chen",
-        requested_access="vpn",
-    ),
-    RawRequest(
-        request_id="REQ-1002",
-        account_key=" alice.chen ",
-        display_name="Alice   Chen",
-        requested_access="mail",
-    ),
-    RawRequest(
-        request_id="REQ-1003",
-        account_key="existing-bob.wu",
-        display_name="Bob Wu",
-        requested_access="vpn",
-    ),
-    RawRequest(
-        request_id="REQ-1004",
-        account_key="carol.lin",
-        display_name="Carol Lin",
-        requested_access="admin",
-    ),
+    RawRequest("REQ-1001", "alice.chen", "Alice Chen", "vpn"),
+    RawRequest("REQ-1002", " alice.chen ", "Alice   Chen", "mail"),
+    RawRequest("REQ-1003", "bob.wu", "Bob Wu", "vpn"),
+    RawRequest("REQ-1004", "carol.lin", "Carol Lin", "admin"),
 ]
+
+SAMPLE_EXISTING_ACCOUNTS = {"bob.wu"}
