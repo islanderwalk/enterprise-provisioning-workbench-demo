@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Iterable, Protocol, Sequence
+from dataclasses import dataclass, field
+from typing import Protocol, Sequence
 
 from .models import Action, PlannedAction, RawRequest
 
@@ -12,6 +12,9 @@ class SourceAdapter(Protocol):
 
 
 class ProvisioningAdapter(Protocol):
+    def account_exists(self, account_key: str) -> bool:
+        ...
+
     def apply(self, actions: Sequence[PlannedAction]) -> tuple[str, ...]:
         ...
 
@@ -29,7 +32,13 @@ class InMemorySourceAdapter:
         return list(self.requests)
 
 
+@dataclass
 class SimulatedProvisioningAdapter:
+    existing_accounts: set[str] = field(default_factory=set)
+
+    def account_exists(self, account_key: str) -> bool:
+        return account_key.casefold() in {item.casefold() for item in self.existing_accounts}
+
     def apply(self, actions: Sequence[PlannedAction]) -> tuple[str, ...]:
         events: list[str] = []
         for action in actions:
