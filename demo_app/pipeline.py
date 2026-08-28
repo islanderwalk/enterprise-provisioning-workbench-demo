@@ -1,20 +1,26 @@
 from __future__ import annotations
 
+from collections.abc import Callable
+
 from .adapters import NotificationAdapter, ProvisioningAdapter, SourceAdapter
 from .models import Action, BatchRunSummary, NormalizedRequest, PlannedAction, RawRequest, WorkItem
 
 
 def normalize_requests(raw_requests: list[RawRequest]) -> list[NormalizedRequest]:
-    return [
-        NormalizedRequest(
-            request_id=item.request_id.strip(),
-            account_key=item.account_key.strip().lower(),
-            display_name=" ".join(item.display_name.split()),
-            requested_access=item.requested_access.strip().upper(),
-            source_channel=item.source_channel.strip().lower(),
-        )
-        for item in raw_requests
-    ]
+    normalized: list[NormalizedRequest] = []
+    for index, item in enumerate(raw_requests, start=1):
+        values = {
+            "request_id": item.request_id.strip(),
+            "account_key": item.account_key.strip().casefold(),
+            "display_name": " ".join(item.display_name.split()),
+            "requested_access": item.requested_access.strip().upper(),
+            "source_channel": item.source_channel.strip().casefold(),
+        }
+        missing = [name for name, value in values.items() if not value]
+        if missing:
+            raise ValueError(f"Request {index} is missing: {', '.join(missing)}")
+        normalized.append(NormalizedRequest(**values))
+    return normalized
 
 
 def merge_requests(normalized_requests: list[NormalizedRequest]) -> list[WorkItem]:
@@ -47,18 +53,21 @@ def merge_requests(normalized_requests: list[NormalizedRequest]) -> list[WorkIte
     return sorted(work_items, key=lambda item: item.account_key)
 
 
-def plan_actions(work_items: list[WorkItem]) -> list[PlannedAction]:
+def plan_actions(
+    work_items: list[WorkItem],
+    account_exists: Callable[[str], bool],
+) -> list[PlannedAction]:
     planned: list[PlannedAction] = []
     for item in work_items:
-        if item.account_key.startswith("existing-"):
+        if account_exists(item.account_key):
             action = Action.SKIP
-            reason = "Existing account detected by deterministic lookup rule."
+            reason = "Existing account confirmed by the provisioning adapter."
         elif "ADMIN" in item.requested_access or len(item.requested_access) > 2:
             action = Action.REVIEW
-            reason = "High-impact access or complex merge requires operator review."
+            reason = "High-impact access or a complex merge requires operator review."
         else:
             action = Action.CREATE
-            reason = "Safe deterministic batch create."
+            reason = "Request passed deterministic validation and policy checks."
 
         planned.append(
             PlannedAction(
@@ -81,7 +90,7 @@ def run_demo(
     raw_requests = source.fetch_requests()
     normalized_requests = normalize_requests(raw_requests)
     work_items = merge_requests(normalized_requests)
-    actions = plan_actions(work_items)
+    actions = plan_actions(work_items, provisioning.account_exists)
     provisioning_events = provisioning.apply(actions)
     draft_previews = notifications.build_drafts(actions)
     return BatchRunSummary(
